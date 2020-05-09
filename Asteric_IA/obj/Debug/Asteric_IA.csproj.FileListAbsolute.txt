@@ -1,0 +1,19 @@
+C:\Users\YADER\Documents\Visual Studio 2015\Projects\Asteric_IA\Asteric_IA\bin\Debug\Asteric_IA.exe.config
+C:\Users\YADER\Documents\Visual Studio 2015\Projects\Asteric_IA\Asteric_IA\bin\Debug\Asteric_IA.exe
+C:\Users\YADER\Documents\Visual Studio 2015\Projects\Asteric_IA\Asteric_IA\bin\Debug\Asteric_IA.pdb
+C:\Users\YADER\Documents\Visual Studio 2015\Projects\Asteric_IA\Asteric_IA\obj\Debug\Asteric_IA.csprojResolveAssemblyReference.cache
+C:\Users\YADER\Documents\Visual Studio 2015\Projects\Asteric_IA\Asteric_IA\obj\Debug\Asteric_IA.Inicio.resources
+C:\Users\YADER\Documents\Visual Studio 2015\Projects\Asteric_IA\Asteric_IA\obj\Debug\Asteric_IA.Properties.Resources.resources
+C:\Users\YADER\Documents\Visual Studio 2015\Projects\Asteric_IA\Asteric_IA\obj\Debug\Asteric_IA.csproj.GenerateResource.Cache
+C:\Users\YADER\Documents\Visual Studio 2015\Projects\Asteric_IA\Asteric_IA\obj\Debug\Asteric_IA.exe
+C:\Users\YADER\Documents\Visual Studio 2015\Projects\Asteric_IA\Asteric_IA\obj\Debug\Asteric_IA.pdb
+D:\TB_01\Asteric_IA\bin\Debug\Asteric_IA.exe.config
+D:\TB_01\Asteric_IA\bin\Debug\Asteric_IA.exe
+D:\TB_01\Asteric_IA\bin\Debug\Asteric_IA.pdb
+D:\TB_01\Asteric_IA\obj\Debug\Asteric_IA.csprojAssemblyReference.cache
+D:\TB_01\Asteric_IA\obj\Debug\Asteric_IA.Inicio.resources
+D:\TB_01\Asteric_IA\obj\Debug\Asteric_IA.Properties.Resources.resources
+D:\TB_01\Asteric_IA\obj\Debug\Asteric_IA.csproj.GenerateResource.cache
+D:\TB_01\Asteric_IA\obj\Debug\Asteric_IA.csproj.CoreCompileInputs.cache
+D:\TB_01\Asteric_IA\obj\Debug\Asteric_IA.exe
+D:\TB_01\Asteric_IA\obj\Debug\Asteric_IA.pdb
