@@ -30,5 +30,8 @@ namespace Asteric_IA
             this.tipo = 0;
         }
 
+
+
+
     }
 }

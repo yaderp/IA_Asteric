@@ -14,37 +14,33 @@ namespace Asteric_IA
 {
     public partial class Inicio : Form
     {
-        int COLUMNAS;
-        int FILAS;
+        int COLUMNAS = Variables.COLUMNAS;
+        int FILAS = Variables.FILAS;
 
         List<Datos> ListaDatos;
         int xfinal;
         int yfinal;
         int PesoHV = 10;
         int PesoD = 14;
-        int px = 0;
-        int py = 0;
-        int dim = 40;
+        int dim = Variables.DIM;
         Pen lapiz = new Pen(Color.FromArgb(37, 56, 125));
         SolidBrush pincel = new SolidBrush(Color.FromArgb(210, 214, 230));
         Graphics dibujo;
-        int xInicial = 0;
-        int yInicial = 0;
+        int tiempo = 5;
 
-        int tiempo = 10;
-
-        int hallado = -1;
-
+        bool hallado = false;
         List<Datos> ListaCamino;
         int contador = 0;
+        int IndexFinal = -1;
+        int IndexInicial = -1;
         public Inicio()
         {
             InitializeComponent();
         }
 
         private void Inicio_Load(object sender, EventArgs e)
-        {         
-            
+        {
+
         }
 
         #region Valor Inicial
@@ -52,24 +48,14 @@ namespace Asteric_IA
         { 
             try
             {
-                lapiz = new Pen(Color.FromArgb(37, 56, 125));
-                
                 ListaDatos = new List<Datos>();
+                lapiz = new Pen(Color.FromArgb(37, 56, 125));
                 string rutaCompleta = @"matriz.txt";
-
                 string linea = "";
 
                 using (StreamReader file = new StreamReader(rutaCompleta))
                 {
-                    linea = file.ReadLine();
-                    this.COLUMNAS = Convert.ToInt32(linea);
-                    linea = file.ReadLine();
-                    this.FILAS = Convert.ToInt32(linea);
-
-                    panelCuadro.Width = COLUMNAS * dim + 2;
-                    panelCuadro.Height = FILAS * dim + 2;
                     dibujo = panelCuadro.CreateGraphics();
-                    labelMaxColumnas.Text = "Matriz :  "+(COLUMNAS).ToString()+" x "+ (FILAS).ToString();
 
                     for (int j = 0; j < FILAS; j++)
                     {
@@ -84,21 +70,13 @@ namespace Asteric_IA
                             for (int i = 0; i < COLUMNAS; i++)
                             {
                                 Datos temp = new Datos();
-                                temp.tipo = Convert.ToInt32(letra[i]);
-                                //if (temp.tipo == 5) {
-                                //    xfinal = i;
-                                //    yfinal = j;
-                                //}
-                                //if (temp.tipo == 4)
-                                //{
-                                //    xInicial = i;
-                                //    yInicial = j;
-                                //}
+                                temp.tipo = Convert.ToInt32(letra[i]);                                
                                 temp.ID = j * COLUMNAS + i;
                                 temp.x = i;
                                 temp.y = j;
                                 this.ListaDatos.Add(temp);
-                                DibujarDato(temp);
+                                //DibujarMapa(temp);
+                                
                             }
                         }
                     }
@@ -116,8 +94,7 @@ namespace Asteric_IA
         }
         #endregion
 
-        private void Recorrido(int y, int x) {
-            int Index = COLUMNAS * y + x;
+        private void Recorrido(int Index) {            
             ListaDatos[Index].cerrado = true;
             Vecino(Index);
 
@@ -126,7 +103,7 @@ namespace Asteric_IA
         {
             int auxIndex = Verifica(Index);
 
-            if (hallado > 0)
+            if (hallado)
                 return;
 
             if (auxIndex >= 0)
@@ -215,8 +192,6 @@ namespace Asteric_IA
             if (movimiento(4, y + 1, x + 1,Index))
                 VerificaVecinos(y + 1, x + 1, PesoD, Index);
 
-            if (hallado > 0)
-                return hallado;
 
             List<Datos> lstaAbierto = new List<Datos>();
 
@@ -288,12 +263,13 @@ namespace Asteric_IA
                         }
                     }
                     else {
-                        hallado = Index;
+                        hallado = true;
                         temp.disFin = aux;
                         temp.disIni = distancia + ListaDatos[indexpadre].disIni;
                         temp.suma = sumita;
                         temp.cerrado = true;
                         temp.abierto = false;
+                        temp.tipo = 5;
                         temp.padre = ListaDatos[indexpadre];
                     }
                 }               
@@ -312,9 +288,18 @@ namespace Asteric_IA
             }
         }
         private void buttonCargar_Click(object sender, EventArgs e)
-        {            
-            LLenarMatriz();           
+        {
+
+            IndexFinal = -1;
+            IndexInicial = -1;
+            contador = 0;
+            ListaCamino = new List<Datos>();
+            ListaDatos = new List<Datos>();
+            hallado = false;
+            LLenarMatriz();
+            Pinta_Mapa();
         }
+              
         private void DibujarRecorrido(Datos datos) {
             
             SolidBrush letra = new SolidBrush(Color.FromArgb(37, 56, 125));
@@ -334,15 +319,15 @@ namespace Asteric_IA
             Font fuente = new Font("Arial", 5);
             Font fuente1 = new Font("Arial", 8, FontStyle.Bold);
 
-            dibujo.FillRectangle(pincel, new Rectangle(px + 3 + dim * datos.x, py + 3 + dim * datos.y, dim - 6, dim - 6));
+            //dibujo.FillRectangle(pincel, new Rectangle(3 + dim * datos.x,3 + dim * datos.y, dim - 6, dim - 6));
 
-            dibujo.DrawRectangle(lapiz, px + 3 + dim * datos.x, py + 3 + dim * datos.y, dim - 6, dim - 6);
+            dibujo.DrawRectangle(lapiz, 3 + dim * datos.x, 3 + dim * datos.y, dim - 6, dim - 6);
             PausaRecorrido();
-            dibujo.DrawString(datos.disIni.ToString(), fuente, letra, px + dim * datos.x + 5, py + dim * datos.y + 30);
+            dibujo.DrawString(datos.disIni.ToString(), fuente, letra, dim * datos.x + 5, dim * datos.y + 30);
             PausaRecorrido();
-            dibujo.DrawString(datos.disFin.ToString(), fuente, letra, px + dim * datos.x + 5, py + dim * datos.y + 5);
+            dibujo.DrawString(datos.disFin.ToString(), fuente, letra, dim * datos.x + 5, dim * datos.y + 5);
             PausaRecorrido();
-            dibujo.DrawString((datos.suma).ToString(), fuente1, letra, px + dim * datos.x + 10, py + dim * datos.y + 15);
+            dibujo.DrawString((datos.suma).ToString(), fuente1, letra, dim * datos.x + 10, dim * datos.y + 15);
             PausaRecorrido();
         }
 
@@ -352,9 +337,9 @@ namespace Asteric_IA
                 lapiz = new Pen(Color.FromArgb(37, 56, 125));
                 Font fuente1 = new Font("Arial", 8, FontStyle.Bold);
                 SolidBrush letra = new SolidBrush(Color.FromArgb(37, 56, 125));
-                dibujo.FillRectangle(pincel, new Rectangle(px + dim * dato.x, py + dim * dato.y, dim, dim));
-                dibujo.DrawRectangle(lapiz, px + dim * dato.x, py + dim * dato.y, dim, dim);
-                dibujo.DrawString((dato.ID).ToString(), fuente1, letra, px + dim * dato.x + 10, py + dim * dato.y + 15);
+                dibujo.FillRectangle(pincel, new Rectangle(dim * dato.x,dim * dato.y, dim, dim));
+                dibujo.DrawRectangle(lapiz,dim * dato.x,dim * dato.y, dim, dim);
+                dibujo.DrawString((dato.ID).ToString(), fuente1, letra,dim * dato.x + 10,dim * dato.y + 15);
                 PausaRecorrido();
             }                
         }
@@ -408,32 +393,21 @@ namespace Asteric_IA
         
         private void buttonIniciar_Click(object sender, EventArgs e)
         {
-            var pinicio = Convert.ToInt32(textBoxInicio.Text);
-
-            xInicial = pinicio % COLUMNAS;
-            yInicial = pinicio / COLUMNAS;
-            ListaDatos[pinicio].tipo = 4;
-
-            
-
-            var pfinal = Convert.ToInt32(textBoxFinal.Text);
-
-            xfinal = pfinal % COLUMNAS;
-            yfinal = pfinal / COLUMNAS;
-
-            ListaDatos[pfinal].tipo = 5;
-
-            DibujarDato(ListaDatos[pinicio]);
-            DibujarDato(ListaDatos[pfinal]);
-
-            contador = 0;
-            ListaCamino = new List<Datos>();
-            Recorrido(yInicial, xInicial);
-            if (hallado < 0)
+            if (IndexInicial >= 0 && IndexFinal >= 0)
             {
-                MessageBox.Show("No existe Camino.", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                contador = 0;
+                ListaCamino = new List<Datos>();
+                Recorrido(IndexInicial);
+                if (!hallado)
+                {
+                    MessageBox.Show("No existe Camino.", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
 
+                }
             }
+            else {
+                MessageBox.Show("Lugar de inicio y/o final no marcados", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            
         }
 
         private void comboBoxVelocidad_SelectedIndexChanged(object sender, EventArgs e)
@@ -446,31 +420,90 @@ namespace Asteric_IA
                 tiempo = 10;
         }
         
-        private void buttonReiniciar_Click(object sender, EventArgs e)
-        {
-            //finalizar
-            hallado = -1;
-            LLenarMatriz();
-            Recorrido(yInicial, xInicial);
-            mostrarPadre(ListaDatos[COLUMNAS * yfinal + xfinal]);
-            if (hallado < 0)
-            {
-                MessageBox.Show("No existe Camino.", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+        private void DibujarMapa(Datos dato) {
+            Bitmap imagen = new Bitmap("Imagen/mapa.png");
+            Bitmap imgtransparente = new Bitmap(imagen);
+            //imgtransparente.MakeTransparent(imgtransparente.GetPixel(1, 1));
+            Rectangle porcionAUsar = new Rectangle(dato.tipo*40, 0, 40, 40);
+            dibujo.DrawImage(imgtransparente, dato.x * Variables.DIM, dato.y * Variables.DIM, porcionAUsar, GraphicsUnit.Pixel);
 
+            if (dato.tipo > 5) {
+
+                if (dato.tipo == 9)
+                {
+                    ListaDatos[dato.ID].tipo = 0;
+                }
+                else {
+                    ListaDatos[dato.ID].tipo = 1;
+                }                
+            }
+        }
+        
+        private void Pinta_Mapa() {
+            
+            foreach (var item in ListaDatos)
+            {
+                DibujarMapa(item);
             }
         }
 
         private void buttonCamino_Click(object sender, EventArgs e)
         {
-            mostrarPadre(ListaDatos[COLUMNAS * yfinal + xfinal]);
-            
-            if (ListaCamino != null) {
-                var vercamino = ListaCamino.OrderByDescending(x => x.ID).ToList();
-                foreach (var item in vercamino) {
-                    DibujarDato(item);
+            mostrarPadre(ListaDatos[IndexFinal]);
+            var dInicio = ListaDatos[IndexInicial];
+            var dFinal = ListaDatos[IndexFinal];
+            //dFinal.tipo = 5;
+
+            LLenarMatriz();
+
+            ListaDatos[IndexFinal] = dFinal;
+            ListaDatos[IndexInicial] = dFinal;
+
+            Pinta_Mapa();
+
+            if (ListaCamino != null)
+            {
+                ListaCamino = ListaCamino.OrderByDescending(x => x.ID).ToList();
+
+                for (int i = 1; i < ListaCamino.Count() - 1; i++) {
+                    ListaCamino[i].ID = i;
+                    DibujarDato(ListaCamino[i]);
                 }
-                
             }
+        }
+
+        private void panelCuadro_Click(object sender, EventArgs e)
+        {
+
+            if (IndexInicial < 0 || IndexFinal < 0) {
+                Point point = panelCuadro.PointToClient(Cursor.Position);
+
+                int posx = point.X / Variables.DIM;
+                int posy = point.Y / Variables.DIM;
+                int posxy = posy * COLUMNAS + posx;
+
+                if (ListaDatos[posxy].tipo == 0)
+                {
+                    Datos temp = new Datos();
+                    temp.x = posx;
+                    temp.y = posy;
+                    temp.ID = posxy;
+                    if (IndexInicial < 0)
+                    {
+                        temp.tipo = 4;
+                        IndexInicial = posxy;
+                    }
+                    else {
+                        temp.tipo = 5;
+                        IndexFinal = posxy;
+                        xfinal = posx;
+                        yfinal = posy;
+                    }
+
+                    DibujarMapa(temp);
+                }
+            }
+            
         }
     }
 }
