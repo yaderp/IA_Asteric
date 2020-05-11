@@ -131,7 +131,7 @@ namespace Asteric_IA
                     }
 
                     // izquierda abajo
-                    if (tipo == 2)
+                    if (tipo == 3)
                     {
                         var abajo = ListaDatos[mov + 1].tipo;
                         var arriba = ListaDatos[Index - 1].tipo;
@@ -140,7 +140,7 @@ namespace Asteric_IA
                     }
 
                     // derecha arriba
-                    if (tipo == 3)
+                    if (tipo == 2)
                     {
                         var abajo = ListaDatos[Index + 1].tipo;
                         var arriba = ListaDatos[mov - 1].tipo;
@@ -234,7 +234,7 @@ namespace Asteric_IA
                 var  temp = ListaDatos[Index];
 
                 //verifica que sea camino libre y no haya sido tomado o visitado
-                if ((temp.tipo < 1 || temp.tipo > 3) && temp.cerrado == false)
+                if ((temp.tipo < 1 || temp.tipo > 4) && temp.cerrado == false)
                 {
                     //Calcula distancia hasta el punto final
                     int aux = (Math.Abs(yfinal - y) + Math.Abs(xfinal - x)) * 10;
@@ -499,6 +499,8 @@ namespace Asteric_IA
                         xfinal = posx;
                         yfinal = posy;
                     }
+
+                    ListaDatos[posxy] = temp;
 
                     DibujarMapa(temp);
                 }

@@ -16,3 +16,4 @@ D:\TB_01\Asteric_IA\obj\Debug\Asteric_IA.csproj.GenerateResource.cache
 D:\TB_01\Asteric_IA\obj\Debug\Asteric_IA.csproj.CoreCompileInputs.cache
 D:\TB_01\Asteric_IA\obj\Debug\Asteric_IA.exe
 D:\TB_01\Asteric_IA\obj\Debug\Asteric_IA.pdb
+D:\TB_01\Asteric_IA\obj\Debug\Asteric_IA.csprojAssemblyReference.cache
